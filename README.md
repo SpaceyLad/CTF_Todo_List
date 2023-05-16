@@ -10,7 +10,8 @@ The site is a simple to-do list application. Your Mabel Higgins is confident tha
 
 Happy hacking <3
 
-![bilde](https://github.com/SpaceyLad/CTF_Todo_List/assets/87969837/8f13403d-bec1-4015-a9f7-0dff1525dc8b)
+![bilde](https://github.com/SpaceyLad/CTF_Todo_List/assets/87969837/ab9435c2-8bdb-421c-b8d9-909468ca4d82)
+
 
 # General
 
@@ -46,7 +47,3 @@ This project uses Python 3.8 or above, and pip for package management. Make sure
 There are 3 Flags hidden within the application. Because you can download the files locally, it is quite easy to just read the soruce code and find the flag. So i recommend you to start the server and explore it like you would explore a normal web application.
 One day I'll try to bake the CTF challenge into a docker container :]
 
-### Artists
-Make sure to visit the awesome artist at the link bellow <3
-                                                            
-https://www.deviantart.com/kirokaze/gallery
