@@ -8,7 +8,7 @@ Can you prove her wrong? Can you find the 3 hidden flags that demonstrate the vu
 
 The site is a simple to-do list application. Your Mabel Higgins is confident that she's followed all the best practices in her Flask application. But remember, no system is entirely secure. Keep your eyes open for any XXXXXXX XXXXXX XXXXXXX and potential XXXXXXXX issues.
 
-Good luck, and happy hunting!
+Happy hacking <3
 
 ![bilde](https://github.com/SpaceyLad/CTF_Todo_List/assets/87969837/8f13403d-bec1-4015-a9f7-0dff1525dc8b)
 
