@@ -1,0 +1,48 @@
+body{
+    font-family: sans-serif;
+}
+.h1{
+color:white;
+}
+
+#tbl{
+background: rgba(255, 255, 255, .7)
+}
+
+.content {
+    margin: 0 auto;
+    width: 50vw;
+}
+
+table, td, th {
+    border: 1px solid #aaa;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th {
+    height: 30px;
+}
+
+td {
+    text-align: center;
+    padding: 5px;
+}
+
+.form {
+    margin-top: 20px;
+}
+
+#content {
+    width: 70%;
+}
+#derp{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    height: auto;
+}
