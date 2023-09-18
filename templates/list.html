@@ -1,0 +1,43 @@
+
+{% extends "base.html" %}
+
+{% block head %}
+<title>My Todo list</title>
+<script src="/static/scripts.js"></script>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center; color:white;font-family: retro;">Todo list</h1>
+
+    <table id ="tbl">
+        <tr>
+             <th>User</th>
+            <th>Task</th>
+            <th>Added</th>
+            <th>Actions</th>
+        </tr>
+        {% for task in tasks %}
+        <tr>
+            {% if user == task.user %}
+            <td>{{ task.user }}</td>
+            <td>{{ task.content }}</td>
+            <td>{{ task.date_created.ctime() }}</td>
+            <td>
+                <a href="/delete/{{task.id}}" class="action-link">Delete</a>
+                <a href="/update/{{task.id}}" class="action-link">Update</a>
+            </td>
+            {% endif %}
+        </tr>
+        {% if task.content == "Secret_flag_REVEAL": %}
+        <img src="/static/woho.png" class="center;width: 150px" id="derp">
+        {% endif %}
+        {% endfor %}
+    </table>
+
+    <form action="/list" method="POST">
+        <input type="text" name="content" id="content" placeholder="Add a new task">
+        <input type="submit" value="Add task">
+    </form>
+</div>
+{% endblock %}

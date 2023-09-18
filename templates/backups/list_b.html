@@ -11,35 +11,31 @@
 
     <table id ="tbl">
         <tr>
+             <th>User</th>
             <th>Task</th>
             <th>Added</th>
             <th>Actions</th>
         </tr>
         {% for task in tasks %}
         <tr>
-            {% if task.id != 1 and task.id != 2 and task.id != 35 and task.id != 100: %}
+            {% if user == task.user %}
+            <td>{{ task.user }}</td>
             <td>{{ task.content }}</td>
             <td>{{ task.date_created.ctime() }}</td>
             <td>
-                <!-- Hide certain tasks from the user. -->
-                {% if task.id != 3 and task.id != 4 and task.id != 5 and task.id != 6 and task.id != 7 and task.id != 8 and task.id != 10: %}
                 <a href="/delete/{{task.id}}">Delete</a>
                 <br>
                 <a href="/update/{{task.id}}">Update</a>
-                {% endif %}
             </td>
+            {% endif %}
         </tr>
-        {% endif %}
         {% if task.content == "Secret_flag_REVEAL": %}
         <img src="/static/woho.png" class="center;width: 150px" id="derp">
-        {% endif %}
-        {% if task.content == "console_heck": %}
-        <script> console.log("flag{ez_pz_console_sqzy}") </script>
         {% endif %}
         {% endfor %}
     </table>
 
-    <form action="/" method="POST">
+    <form action="/list" method="POST">
         <input type="text" name="content" id="content">
         <input type="submit" value="Add task">
     </form>

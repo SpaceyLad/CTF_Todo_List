@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Todo list</title>
+    <title>{% block title %}My Website{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body{
         background-image: url({{ url_for('static', filename='retro.png') }});
@@ -13,10 +14,56 @@
         background-attachment: fixed;
         background-size: cover;
         }
+            .sidebar {
+            height: 100%;
+            width: 200px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            padding: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+        .sidebar h1 {
+            padding: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+        .main-content {
+            margin-left: 220px;
+            padding: 20px;
+        }
     </style>
     {% block head %}{% endblock %}
 </head>
 <body>
+    <div class="sidebar">
+        <h1> {{ user }}</h1>
+        {% if not user %}
+        <a href="/">Log in</a>
+        {% endif %}
+        {% if is_admin %}
+        <a href="/admin">Admin Panel</a>
+        {% endif %}
+        {% if user %}
+        <a href="/list">Personal list</a>
+        {% if user == "flag_bærer_john" %}
+        <a href="/secret">Secret</a>
+        {% endif %}
+        <a href="/logout">Logout</a>
+        {% endif %}
+    </div>
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
   {% block body %}
   {% endblock %}
 </body>
