@@ -18,19 +18,34 @@ class Todo(db.Model):
         return f"<Task {self.id} | Content: {self.content} | Created at: {self.date_created}>"
 
 
+class Users(db.Model):
+    userId = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    user_group = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        return f"<User {self.userId} | Username: {self.username} | Group: {self.user_group}>"
+
+
+
 # username:password
 users = {
     "pål": "hr_ansatt1",
     "morten": "it_ansatt3",
     "flag_bærer_john": "54s6e5cdrf9872bgex8712gex97y3diu32hd3o487o3",
-    "admin": "admin123"
+    "admin": "admin123",
+    "<script>alert(\'ahh..\')</script>": "password",
+    "TheBoss":"0321498r7nxy34871ryyufhfgu"
 }
 # username:group
 groups = {
     "pål": "user",
     "morten": "user",
     "flag_bærer_john": "user",
-    "admin": "admin"
+    "admin": "admin",
+    "<script>alert(\'ahh..\')</script>":"user",
+    "TheBoss":"user"
 }
 
 #

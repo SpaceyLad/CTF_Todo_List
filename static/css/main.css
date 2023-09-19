@@ -1,5 +1,4 @@
-
-body{
+body {
     font-family: 'Nunito', sans-serif;
     background-image: url({{ url_for('static', filename='retro.png') }});
     background-repeat: no-repeat;
@@ -7,11 +6,11 @@ body{
     background-size: cover;
 }
 
-.h1{
-    color:white;
+.title {
+    color: white;
 }
 
-#tbl{
+#tbl {
     background: rgba(255, 255, 255, .7);
 }
 
@@ -20,38 +19,83 @@ body{
     width: 50vw;
 }
 
-table, td, th {
-    border: 1px solid #aaa;
-}
-
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 60vw;
+}
+
+th, td {
+    border: 1px solid #aaa;
+    padding: 10px;
+    text-align: left;
 }
 
 th {
     height: 30px;
+    background-color: #111;
+    color: white;
 }
 
-td {
-    text-align: center;
-    padding: 5px;
+tr:nth-child(even) {
+    background-color: #f2f2f2;
 }
 
 .form {
     margin-top: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
 }
 
-#content {
-    width: 70%;
+input[type="text"], input[type="password"], #username, #password {
+    width: 60vw;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    font-size: 1vw;
 }
 
-#derp{
+#username, #password {
+    position:absolute;
+    width: 20vw;
+    height:5vh;
+    left:45vw;
+}
+
+#username{
+    top:30vh;
+}
+
+#password{
+    top:40vh;
+}
+
+#login-btn {
+    position:absolute;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 30%;
-    height: auto;
+    margin: 0 auto;
+    left:50vw;
+    top:50vh;
+    width:10vw;
+    height:5vh;
+    font-size: 1vw;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #111;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1vw;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #575757;
 }
 
 /* Sidebar Styles */
@@ -66,13 +110,16 @@ td {
     box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.2);
 }
 
-.sidebar a {
+.sidebar a, .sidebar h1 {
     padding: 15px;
-    text-decoration: none;
-    font-size: 18px;
     color: white;
     display: block;
     transition: background-color 0.3s;
+}
+
+.sidebar a {
+    text-decoration: none;
+    font-size: 1vw;
 }
 
 .sidebar a:hover {
@@ -80,77 +127,13 @@ td {
 }
 
 .sidebar h1 {
-    padding: 15px;
-    font-size: 22px;
-    color: white;
-    display: block;
+    font-size: 1vw;
     border-bottom: 1px solid #444;
 }
 
 .main-content {
     margin-left: 220px;
     padding: 20px;
-}
-
-/* Form Styles */
-form {
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-label {
-    display: block;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-input[type="text"], input[type="password"] {
-    width: 100%;
-    padding: 10px 15px;
-    margin-bottom: 15px;
-    border: 1px solid #aaa;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-input[type="submit"] {
-    padding: 10px 20px;
-    background-color: #111;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-input[type="submit"]:hover {
-    background-color: #575757;
-}
-
-/* Table Styles */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-table, th, td {
-    border: 1px solid #aaa;
-}
-
-th, td {
-    padding: 10px;
-    text-align: left;
-}
-
-th {
-    background-color: #111;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
 }
 
 /* Action Links */
@@ -168,16 +151,5 @@ a.action-link:hover {
 }
 
 a.action-link:not(:last-child) {
-    margin-right: 10px;
-}
-
-/* Form Styles */
-form {
-    display: flex;
-    justify-content: space-between;
-}
-
-form input[type="text"] {
-    flex: 1;
     margin-right: 10px;
 }

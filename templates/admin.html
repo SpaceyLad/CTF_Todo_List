@@ -2,19 +2,23 @@
 {% extends "base.html" %}
 
 {% block title %}Admin Panel{% endblock %}
-
 {% block content %}
-    <h1>Welcome to the admin panel!</h1>
-    <p>Welcome {{ user }}!</p>
-
-    <table id="usr_tbl">
+<table>
+    <thead>
         <tr>
-            <th>Users</th>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Group</th>
         </tr>
-        {% for u in users %}
-        <tr>
-            <td>{{ u }}</td>
-        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.userId }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.user_group }}</td>
+            </tr>
         {% endfor %}
-    </table>
+    </tbody>
+</table>
 {% endblock %}

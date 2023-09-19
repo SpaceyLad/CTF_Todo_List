@@ -4,6 +4,17 @@ import config as conf
 import jwt
 
 
+# TODO: XSS with username,JWT hacking, HTML client manipulation
+# DONE: IDOR, XSS with username
+
+# TODO: Make login check database and not the local list.
+
+# Attack chain
+# 1. HTML manipulation
+# 2. XSS with username
+# 3. admin takeover with username.
+# 4. JWT secret cracking and CEO takeover
+
 @conf.app.route('/')
 def home():
     return render_template('login.html')
@@ -25,7 +36,7 @@ def login():
         resp = make_response(redirect('/list'))
         resp.set_cookie('token', token)
         return resp
-    return 'Invalid username or password!', 401
+    return render_template('login.html',error_msg="Invalid credentials")
 
 
 @conf.app.route("/list", methods=["POST", "GET"])
@@ -91,8 +102,9 @@ def admin():
         data = jwt.decode(token, conf.secret_key, algorithms=['HS256'])
         if data['group'] == 'admin':
             is_admin = data["group"] == "admin"
+            users = conf.Users.query.order_by(conf.Users.userId).all()
             return render_template('admin.html', user=data["user"], group=data["group"], is_admin=is_admin,
-                                   users=conf.users)
+                                   users=users)
         else:
             is_admin = data["group"] == "admin"
             tasks = conf.Todo.query.order_by(conf.Todo.date_created).all()

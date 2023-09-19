@@ -21,7 +21,7 @@
         <tr>
             {% if user == task.user %}
             <td>{{ task.user }}</td>
-            <td>{{ task.content }}</td>
+            <td>{{ task.content|safe }}</td>
             <td>{{ task.date_created.ctime() }}</td>
             <td>
                 <a href="/delete/{{task.id}}" class="action-link">Delete</a>
