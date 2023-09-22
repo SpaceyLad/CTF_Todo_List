@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Website{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -55,7 +54,7 @@
         {% if not user %}
         <a href="/">Log in</a>
         {% endif %}
-        {% if is_admin %}
+        {% if group == "admin" %}
         <a href="/admin">Admin Panel</a>
         {% endif %}
         {% if user %}
@@ -63,6 +62,11 @@
         {% if user == "flag_bærer_john" %}
         <a href="/secret">Secret</a>
         {% endif %}
+        {% if group == "dev" %}
+        <a href="/connection">Connection</a>
+        <a href="/manage_users">Manage users</a>
+        {% endif %}
+        <a href="/files">Files</a>
         <a href="/logout">Logout</a>
         {% endif %}
     </div>

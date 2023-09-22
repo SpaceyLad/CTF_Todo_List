@@ -8,5 +8,8 @@
         <input type="text" id="username" name="username" placeholder="Enter Username" class="form-control">
         <input type="password" id="password" name="password" placeholder="Enter Password" class="form-control">
         <input type="submit" value="Login" id="login-btn">
+        {% if error_msg %}
+        <br> {{ error_msg }} </br>
+        {% endif %}
     </form>
 {% endblock %}

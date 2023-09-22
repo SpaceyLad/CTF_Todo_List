@@ -10,3 +10,4 @@ MarkupSafe==2.1.2
 SQLAlchemy==2.0.13
 typing_extensions==4.5.0
 Werkzeug==2.3.4
+PyJWT~=2.8.0

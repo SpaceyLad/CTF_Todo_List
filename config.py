@@ -28,25 +28,5 @@ class Users(db.Model):
         return f"<User {self.userId} | Username: {self.username} | Group: {self.user_group}>"
 
 
-
-# username:password
-users = {
-    "pål": "hr_ansatt1",
-    "morten": "it_ansatt3",
-    "flag_bærer_john": "54s6e5cdrf9872bgex8712gex97y3diu32hd3o487o3",
-    "admin": "admin123",
-    "<script>alert(\'ahh..\')</script>": "password",
-    "TheBoss":"0321498r7nxy34871ryyufhfgu"
-}
-# username:group
-groups = {
-    "pål": "user",
-    "morten": "user",
-    "flag_bærer_john": "user",
-    "admin": "admin",
-    "<script>alert(\'ahh..\')</script>":"user",
-    "TheBoss":"user"
-}
-
 #
 secret_key = "secret123"

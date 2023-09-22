@@ -1,0 +1,30 @@
+
+{% extends "base.html" %}
+
+{% block title %}Admin Panel{% endblock %}
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Username</th>
+            <th>Group</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.userId }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.user_group }}</td>
+                <td>
+                <a href="/delete/user/{{ user.username }}" class="action-link">Delete</a>
+                <a href="/update/user/{{ user.username }}" class="action-link">Update</a>
+                    <a href="/clear/user/{{ user.username }}" class="action-link">Clear list</a>
+            </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
