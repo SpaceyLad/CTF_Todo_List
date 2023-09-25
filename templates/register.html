@@ -1,0 +1,24 @@
+
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <form action="/register" method="post">
+        <h1>Please fill all input fields</h1>
+        <input type="text" id="username" name="username" placeholder="Enter Username" class="form-control">
+        <input type="password" id="password" name="password" placeholder="Enter Password" class="form-control">
+        <select id="role" name="role" class="form-control" disabled>
+          <option value="guest" selected>guest</option>
+          <option value="user">user</option>
+          <option value="dev">dev</option>
+          <option value="admin">admin</option>
+        </select>
+        <input type="hidden" name="role" value="guest">
+
+        <input type="submit" value="Register" id="register-btn">
+        {% if error_msg %}
+        <br> {{ error_msg }} </br>
+        {% endif %}
+    </form>
+{% endblock %}

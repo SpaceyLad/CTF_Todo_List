@@ -5,22 +5,57 @@ import datetime
 import config as conf
 import jwt
 import subprocess
+import db as db_config
 
 
-# TODO: XSS with username,JWT hacking, HTML client manipulation
-# DONE: IDOR, XSS with task.
+# DONE: IDOR, XSS with task, HTML client manipulation,JWT hacking
 
-# TODO: Make login check database and not the local list.
+# TODO: Good to have: Hash all passwords with sha256
+# TODO: Remove the possibility to visit parts unauthenticated.
+# TODO: Implement AI bot for CTF!
+
+"""
+Botten vet hemmeligheter den ikke skal fortelle uansett hva, dette er flaggene. (Lur AI til å fortelle noe bare den vet)
+Du må lure botten til å si et spesifikt ord som den skal nekte å si, uansett hva. Om ordet blir sagt, så gir den flagget (Eller et skript som printer flagget)
+Når en chat blir laget, så lager botten en header for samtalen (Litt som i GUIet til ChatGPT), denne er sårbar mot XSS fordi input blir ikke sanitert.
+"""
 
 # Attack chain
 # 1. HTML manipulation
-# 2. XSS with post -> Use a proxy to send it to another user!
-# 3. admin takeover with post xss cookie stealer.
-# 4. JWT secret cracking and CEO takeover.
+# 2. Understand IDOR and abuse it.
+# 3. XSS with post and/or usernames -> Use a proxy to send it to another user!
+# 4. admin takeover with post xss cookie stealer.
+# 5. JWT secret cracking and CEO takeover.
 
 @conf.app.route('/')
 def home():
     return render_template('login.html')
+
+
+@conf.app.route("/waiting", methods=["GET"])
+def waiting():
+    token = request.cookies.get('token')
+    data = jwt.decode(token, conf.secret_key, algorithms=['HS256'])
+    return render_template("wait.html", user=data["user"], group=data["group"])
+
+
+@conf.app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == "POST":
+
+        u = request.form.get('username')
+        p = request.form.get('password')
+        r = request.form.get('role')
+
+        try:
+            db_config.add_user(u, p, r)
+        except Exception as e:
+            print(f"Could not add the user:\n{e}")
+            return render_template('register.html')
+
+        return render_template('login.html', msg="User created! Please log in.")
+    else:
+        return render_template('register.html')
 
 
 # The POST request for getting the username and password.
@@ -39,7 +74,10 @@ def login():
                 'group': user.user_group,
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60)
             }, conf.secret_key, algorithm='HS256')
-            resp = make_response(redirect('/list'))
+            if user.user_group == "guest":
+                resp = make_response(redirect('/waiting'))
+            else:
+                resp = make_response(redirect('/list'))
             resp.set_cookie('token', token)
             return resp
     return render_template('login.html', error_msg="Invalid credentials")
@@ -136,7 +174,7 @@ def admin():
         data = jwt.decode(token, conf.secret_key, algorithms=['HS256'])
         if data['group'] == 'admin':
             users = conf.Users.query.order_by(conf.Users.userId).all()
-            return render_template('admin.html', user=data["user"], group=data["group"],users=users)
+            return render_template('admin.html', user=data["user"], group=data["group"], users=users)
         else:
             tasks = conf.Todo.query.order_by(conf.Todo.date_created).all()
             return render_template("list.html", tasks=tasks, user=data["user"], group=data["group"])
@@ -173,4 +211,6 @@ def logout():
 
 
 if __name__ == "__main__":
+    db_config.create_todo()
+    db_config.create_and_populate_users_db()
     conf.app.run(host='0.0.0.0', port=5000, debug=True)

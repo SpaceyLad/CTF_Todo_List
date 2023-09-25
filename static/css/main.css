@@ -52,7 +52,7 @@ tr:nth-child(odd) {
     justify-content: space-between;
 }
 
-input[type="text"], input[type="password"], #username, #password {
+input[type="text"], input[type="password"], #username, #password, #role  {
     width: 60vw;
     padding: 10px 15px;
     margin-bottom: 15px;
@@ -61,7 +61,7 @@ input[type="text"], input[type="password"], #username, #password {
     font-size: 1vw;
 }
 
-#username, #password {
+#username, #password, #role {
     position:absolute;
     width: 20vw;
     height:5vh;
@@ -72,19 +72,27 @@ input[type="text"], input[type="password"], #username, #password {
     top:30vh;
 }
 
+#role{
+    top:50vh;
+     height:6vh;
+}
+
 #password{
     top:40vh;
 }
 
-#login-btn {
+#login-btn, #register-btn {
     position:absolute;
     display: block;
     margin: 0 auto;
     left:50vw;
     top:50vh;
     width:10vw;
-    height:5vh;
+    height:6vh;
     font-size: 1vw;
+}
+#register-btn{
+    top:60vh;
 }
 
 input[type="submit"] {

@@ -4,14 +4,11 @@ db_path = 'instance/list.db'
 
 
 def create_todo():
-
-
-
     # Only run this to reset the database file!
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    cursor.execute('DROP TABLE todo')
+    cursor.execute('DROP TABLE IF EXISTS todo')
 
     cursor.execute('''
     CREATE TABLE todo (
@@ -34,13 +31,11 @@ def create_todo():
 
 def create_and_populate_users_db():
 
-
-
     # Connect to the SQLite database
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    cursor.execute('DROP TABLE users')
+    cursor.execute('DROP TABLE IF EXISTS users')
 
     # Create the users table
     cursor.execute('''
@@ -88,6 +83,19 @@ def create_and_populate_users_db():
     ''', users_data)
 
     # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+
+
+def add_user(u, p, r):
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Insert the user data into the table
+    users_data = (str(u), str(p), str(r))
+    print(users_data)
+    cursor.execute("INSERT INTO users (username, password, user_group) VALUES (?, ?, ?)", users_data)
+
     conn.commit()
     conn.close()
 
