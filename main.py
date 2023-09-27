@@ -7,11 +7,7 @@ import jwt
 import subprocess
 import db as db_config
 
-
-# DONE: IDOR, XSS with task, HTML client manipulation,JWT hacking
-
 # TODO: Good to have: Hash all passwords with sha256
-# TODO: Remove the possibility to visit parts unauthenticated.
 # TODO: Implement AI bot for CTF!
 
 """
@@ -19,6 +15,7 @@ Botten vet hemmeligheter den ikke skal fortelle uansett hva, dette er flaggene. 
 Du må lure botten til å si et spesifikt ord som den skal nekte å si, uansett hva. Om ordet blir sagt, så gir den flagget (Eller et skript som printer flagget)
 Når en chat blir laget, så lager botten en header for samtalen (Litt som i GUIet til ChatGPT), denne er sårbar mot XSS fordi input blir ikke sanitert.
 """
+
 
 # Attack chain
 # 1. HTML manipulation
@@ -104,15 +101,16 @@ def index():
 def connect():
     token = request.cookies.get('token')
     data = jwt.decode(token, conf.secret_key, algorithms=['HS256'])
-    if request.method == "POST":
-        try:
-            ip = request.form.get('connect')
-            command = subprocess.check_output(["ping", ip], shell=True, text=True, stderr=subprocess.STDOUT)
-            return render_template("connect.html", command=command, user=data["user"], group=data["group"])
-        except:
+    if data['group'] == 'dev':
+        if request.method == "POST":
+            try:
+                ip = request.form.get('connect')
+                command = subprocess.check_output(["ping", ip], shell=True, text=True, stderr=subprocess.STDOUT)
+                return render_template("connect.html", command=command, user=data["user"], group=data["group"])
+            except:
+                return render_template("connect.html", user=data["user"], group=data["group"])
+        else:
             return render_template("connect.html", user=data["user"], group=data["group"])
-    else:
-        return render_template("connect.html", user=data["user"], group=data["group"])
 
 
 @conf.app.route("/manage_users", methods=["POST", "GET"])
@@ -122,8 +120,9 @@ def manage_users():
         return redirect('/')
     try:
         data = jwt.decode(token, conf.secret_key, algorithms=['HS256'])
-        users = conf.Users.query.order_by(conf.Users.userId).all()
-        return render_template('manage_users.html', user=data["user"], group=data["group"], users=users)
+        if data['group'] == 'dev':
+            users = conf.Users.query.order_by(conf.Users.userId).all()
+            return render_template('manage_users.html', user=data["user"], group=data["group"], users=users)
 
     except jwt.ExpiredSignatureError:
         return 'Session expired!', 403
