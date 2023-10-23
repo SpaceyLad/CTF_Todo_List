@@ -29,4 +29,4 @@ class Users(db.Model):
 
 
 #
-secret_key = "secret123"
+secret_key = "ohno"

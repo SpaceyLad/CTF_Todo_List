@@ -4,8 +4,18 @@
 {% block title %}Waiting..{% endblock %}
 
 {% block content %}
+
+        {% if command %}
+             <h1 style="color: white;">{{ command }}</h1>
+        {% endif %}
+
 <div class="content">
-    <h1>Waiting..</h1>
-    <p>Welcome to our TODO app! Please wait for an admin to let you inn. </p>
+    <img src="{{ url_for('serve_image', image_name='cute.png') }}" alt="Image from Flask">
 </div>
+
+    <form action="/waiting" method="post">
+        <input type="submit" value="Get message from admin" id="get_message">
+        <input name="file" value="message.txt" hidden></input>
+    </form>
 {% endblock %}
+

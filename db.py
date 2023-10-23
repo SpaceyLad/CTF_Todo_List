@@ -1,4 +1,5 @@
 import sqlite3
+import random
 
 db_path = 'instance/list.db'
 
@@ -30,7 +31,6 @@ def create_todo():
 
 
 def create_and_populate_users_db():
-
     # Connect to the SQLite database
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -100,6 +100,49 @@ def add_user(u, p, r):
     conn.close()
 
 
+def populate_todo_for_users():
+    # Connect to the SQLite database
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+
+    # Query all users
+    cursor.execute("SELECT username FROM users")
+    user_names = cursor.fetchall()
+
+    # Default todos to be added for each user
+    default_todo = "Welcome! This is your first todo."
+
+    # Sample todos for randomization
+    sample_todos = [
+        "Buy groceries",
+        "Finish report",
+        "Meet with Sarah at 2pm",
+        "Pay electricity bill",
+        "Schedule doctor appointment",
+        "Book flight tickets",
+        "Plan weekend getaway",
+        "Send out meeting invites",
+        "Clean the house",
+        "Renew gym membership",
+        "Call mom"
+    ]
+
+    # For each user, add the default todo
+    for user_name in user_names:
+        cursor.execute("INSERT INTO todo (content, user) VALUES (?, ?)", (default_todo, user_name[0]))
+
+        # Randomly assign additional todos for users
+        additional_todos_count = random.randint(1, 5)  # add between 1 to 5 additional todos
+        for _ in range(additional_todos_count):
+            content = random.choice(sample_todos)
+            cursor.execute("INSERT INTO todo (content, user) VALUES (?, ?)", (content, user_name[0]))
+
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+
+
 if __name__ == "__main__":
     create_todo()
     create_and_populate_users_db()
+    populate_todo_for_users()

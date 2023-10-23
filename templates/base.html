@@ -68,10 +68,11 @@
         <a href="/connection">Connection</a>
         <a href="/manage_users">Manage users</a>
         {% endif %}
-        <a href="/files">Files</a>
         {% endif %}
         {% endif %}
+        {% if user %}
         <a href="/logout">Logout</a>
+        {% endif %}
 
     </div>
     <div class="main-content">

@@ -5,8 +5,8 @@
 
 {% block content %}
     <form action="/connection" method="post">
-        <input type="submit" value="Connect" id="connect-btn">
-        <input name="connect" value="127.0.0.1"></input>
+        <input type="submit" value="Test Database Connect" id="connect-btn">
+        <input name="connect" value="127.0.0.1" hidden></input>
 
         {% if command %}
          <table id ="tbl">
