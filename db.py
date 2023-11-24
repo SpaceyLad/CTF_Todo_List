@@ -74,7 +74,8 @@ def create_and_populate_users_db():
         ("mathias", "math1a5_505", "user"),
         ("ingrid", "1ngr1d_606", "user"),
         ("erik", "er1k_707", "user"),
-        ("siri", "s1ri_808", "user")
+        ("siri", "s1ri_808", "user"),
+        ("siri", "flag{y0u_f0unD_tHe_u5er_l1st}", "user")
     ]
 
     # Insert the user data into the table
@@ -124,7 +125,8 @@ def populate_todo_for_users():
         "Send out meeting invites",
         "Clean the house",
         "Renew gym membership",
-        "Call mom"
+        "Call mom",
+        "flag{l1st_h4ck3r!}"
     ]
 
     # For each user, add the default todo
