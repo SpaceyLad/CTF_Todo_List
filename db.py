@@ -78,10 +78,15 @@ def create_and_populate_users_db():
         ("siri", "flag{y0u_f0unD_tHe_u5er_l1st}", "user")
     ]
 
-    # Insert the user data into the table
-    cursor.executemany('''
-    INSERT INTO users (username, password, user_group) VALUES (?, ?, ?)
-    ''', users_data)
+    # Check if username already exists in the database
+    for user in users_data:
+        cursor.execute("SELECT username FROM users WHERE username = ?", (user[0],))
+        if cursor.fetchone():
+            print(f"Username {user[0]} already exists. Skipping insertion.")
+            continue
+        cursor.execute('''
+            INSERT INTO users (username, password, user_group) VALUES (?, ?, ?)
+        ''', user)
 
     # Commit the changes and close the connection
     conn.commit()
