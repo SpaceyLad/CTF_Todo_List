@@ -1,23 +1,10 @@
 from flask import render_template, request, redirect, make_response, send_from_directory
-import datetime
-import config as conf
-import jwt
-import subprocess
-import db as db_config
 from functools import wraps
-
-
-# Attack chain part 1 - Initial access and web application takeover
-# 1. HTML manipulation
-# 2. Broken access control. with Gobuster
-# 3. Understand IDOR and abuse it.
-# 4. XSS with post and/or usernames -> Use a proxy to send it to another user!
-# 5. admin takeover with post xss cookie stealer.
-
-# Attack chain part 2 - System access and takeover
-# 6. JWT secret cracking and CEO takeover.
-# 7. LFI vulnerability to read system files. Find secrets.
-# 8. RCE to execute commands. Open a reverse shell.
+import datetime
+import jwt
+import config as conf
+import db as db_config
+from app import app
 
 
 def jwt_required(f):
@@ -37,29 +24,42 @@ def jwt_required(f):
     return decorated_function
 
 
-@conf.app.route("/")
+@app.route("/")
 def home():
     return render_template("login.html")
 
 
-@conf.app.route("/waiting", methods=["GET", "POST"])
+@app.route("/waiting", methods=["GET", "POST"])
 @jwt_required
 def waiting(data):
     if request.method == "POST":
+        ALLOWED_FILES = ["flag/flag.txt", "message.txt"]
+        file = request.form.get("file")
         try:
-            file = request.form.get("file")
-            command = subprocess.check_output(
-                f"type {file}", shell=True, text=True, stderr=subprocess.STDOUT
-            )
+            # Use a secure method to read file contents
+            with open(f"{file}", 'r') as f:
+                command = f.read()
+
+            if file not in ALLOWED_FILES:
+                return render_template(
+                    "wait.html",
+                    command="Stay in scope you sneaky you ;)",
+                    user=data["user"],
+                    group=data["group"]
+                )
+
             return render_template(
                 "wait.html",
                 command=command,
                 user=data["user"],
-                group=data["group"],
+                group=data["group"]
             )
         except:
             return render_template(
-                "wait.html", user=data["user"], group=data["group"]
+                "wait.html",
+                command="An error occurred while reading the file.",
+                user=data["user"],
+                group=data["group"]
             )
     else:
         return render_template(
@@ -67,12 +67,12 @@ def waiting(data):
         )
 
 
-@conf.app.route('/image/<image_name>')
+@app.route('/image/<image_name>')
 def serve_image(image_name):
     return send_from_directory('images', image_name)
 
 
-@conf.app.route("/register", methods=["GET", "POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
         try:
@@ -90,7 +90,7 @@ def register():
 
 
 # The POST request for getting the username and password.
-@conf.app.route("/login", methods=["POST"])
+@app.route("/login", methods=["POST"])
 def login():
     # Get the information from the user.
     username = request.form.get("username")
@@ -118,7 +118,7 @@ def login():
     return render_template("login.html", error_msg="Invalid credentials")
 
 
-@conf.app.route("/list", methods=["POST", "GET"])
+@app.route("/list", methods=["POST", "GET"])
 @jwt_required
 def index(data):
     if request.method == "POST":
@@ -136,33 +136,7 @@ def index(data):
         )
 
 
-@conf.app.route("/connection", methods=["POST", "GET"])
-@jwt_required
-def connect(data):
-    if data["group"] == "dev":
-        if request.method == "POST":
-            try:
-                ip = request.form.get("connect")
-                command = subprocess.check_output(
-                    f"ping {ip}", shell=True, text=True, stderr=subprocess.STDOUT
-                )
-                return render_template(
-                    "connect.html",
-                    command=command,
-                    user=data["user"],
-                    group=data["group"],
-                )
-            except:
-                return render_template(
-                    "connect.html", user=data["user"], group=data["group"]
-                )
-        else:
-            return render_template(
-                "connect.html", user=data["user"], group=data["group"]
-            )
-
-
-@conf.app.route("/manage_users", methods=["POST", "GET"])
+@app.route("/manage_users", methods=["POST", "GET"])
 @jwt_required
 def manage_users(data):
     if data["group"] == "dev":
@@ -172,7 +146,7 @@ def manage_users(data):
         )
 
 
-@conf.app.route("/delete/<int:id>")
+@app.route("/delete/<int:id>")
 @jwt_required
 def delete(id, data):
     try:
@@ -186,13 +160,19 @@ def delete(id, data):
         return f"An error occurred while deleting the task: {str(e)}"
 
 
-@conf.app.route("/update/<int:id>", methods=["GET", "POST"])
+@app.route("/update/<int:id>", methods=["GET", "POST"])
 @jwt_required
 def update(id, data):
     task = conf.Todo.query.get_or_404(id)
 
+    # Check if the logged-in user owns the task
+    if task.user != data["user"]:
+        return render_template(
+            "update.html", task=task, user=data["user"], group=data["group"]
+        )
+
     if request.method == "POST":
-        conf.Todo.query.get_or_404(id).content = request.form["content"]
+        task.content = request.form["content"]
 
         try:
             conf.db.session.commit()
@@ -209,7 +189,7 @@ def update(id, data):
 
 
 # Only users in the "admin" group can access this resource.
-@conf.app.route("/admin")
+@app.route("/admin")
 @jwt_required
 def admin(data):
     if data["group"] == "admin":
@@ -225,7 +205,7 @@ def admin(data):
 
 
 # A secret place only logged-in users can visit. (To test authentication).
-@conf.app.route("/secret")
+@app.route("/secret")
 @jwt_required
 def secret(data):
     if data["group"] == "admin" or data["group"] == "user":
@@ -237,15 +217,8 @@ def secret(data):
 
 
 # A logout button that clears the cookie.
-@conf.app.route("/logout")
+@app.route("/logout")
 def logout():
     resp = make_response(redirect("/"))
     resp.set_cookie("token", "", expires=0)
     return resp
-
-
-if __name__ == "__main__":
-    db_config.create_todo()
-    db_config.create_and_populate_users_db()
-    db_config.populate_todo_for_users()
-    conf.app.run(host="0.0.0.0", port=5000, debug=True)

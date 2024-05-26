@@ -11,6 +11,7 @@
 {% block body %}
 <div class="content">
     <h1 style="text-align: center; color:white;font-family: retro;">Todo list</h1>
+    <p style="text-align: center; color:white;font-family: retro;">flag{y0u_g0t_4cc3ss_w1th0uth_p3rm155i0n}</p>
 
     <table id ="tbl">
         <tr>
@@ -23,7 +24,7 @@
         <tr>
             {% if user == task.user %}
             <td>{{ task.user }}</td>
-            <td>{{ task.content|safe }}</td>
+            <td>{{ task.content }}</td>
             <td>{{ task.date_created.ctime() }}</td>
             <td>
                 <a href="/delete/{{task.id}}" class="action-link">Delete</a>
@@ -31,9 +32,6 @@
             </td>
             {% endif %}
         </tr>
-        {% if task.content == "Secret_flag_REVEAL": %}
-        <img src="/static/woho.png" class="center;width: 150px" id="derp">
-        {% endif %}
         {% endfor %}
     </table>
 

@@ -52,30 +52,30 @@ def create_and_populate_users_db():
         ("pål", "hr_ansatt1", "user"),
         ("morten", "it_ansatt3", "user"),
         ("flag_bærer_john", "54s6e5cdrf9872bgex8712gex97y3diu32hd3o487o3", "user"),
-        ("admin", "admin123", "admin"),
+        ("admin", "54s6e5cdrf9872bgex8712gex97y3diu32hd3o487o3", "admin"),
         ("TheBoss", "0321498r7nxy34871ryyufhfgu", "ceo"),
-        ("Jennifer", "1F1xTh1ng5", "dev"),
+        ("Daniel", "1F1xTh1ng5", "dev"),
         ("oskar", "sc4nd1p4ss1", "user"),
-        ("lina", "2sc4nd1nav14", "user"),
+        ("Millie", "2sc4nd1nav14", "user"),
         ("freja", "fr3yj4_pass", "user"),
         ("emil", "3m1l_scandinav", "user"),
-        ("karin", "k4r1n_987", "user"),
-        ("joakim", "j0ak1m_654", "user"),
+        ("Even", "k4r1n_987", "user"),
+        ("ClassyNic", "j0ak1m_654", "user"),
         ("sofia", "s0f1a_pass", "user"),
-        ("larssen", "la77sen_sure", "user"),
+        ("Rikke", "la77sen_sure", "user"),
         ("maja", "m4j4_pwd", "user"),
-        ("victor", "v1ct0r_231", "user"),
+        ("Sondre", "v1ct0r_231", "user"),
         ("astrid", "a5tr1d_456", "user"),
         ("johan", "j0han_789", "user"),
         ("linnea", "l1nnea_101", "user"),
-        ("nikolaj", "n1k0laj_202", "user"),
+        ("Gabriel", "n1k0laj_202", "user"),
         ("gustav", "gu5tav_303", "user"),
         ("elise", "3l1se_404", "user"),
         ("mathias", "math1a5_505", "user"),
         ("ingrid", "1ngr1d_606", "user"),
         ("erik", "er1k_707", "user"),
         ("siri", "s1ri_808", "user"),
-        ("siri", "flag{y0u_f0unD_tHe_u5er_l1st}", "user")
+        ("siri", "34ijfc094hf024u", "user")
     ]
 
     # Check if username already exists in the database
@@ -131,7 +131,7 @@ def populate_todo_for_users():
         "Clean the house",
         "Renew gym membership",
         "Call mom",
-        "flag{l1st_h4ck3r!}"
+        "flag{1d0r_15_fuN_w0h0:D!}"
     ]
 
     # For each user, add the default todo
@@ -139,7 +139,7 @@ def populate_todo_for_users():
         cursor.execute("INSERT INTO todo (content, user) VALUES (?, ?)", (default_todo, user_name[0]))
 
         # Randomly assign additional todos for users
-        additional_todos_count = random.randint(1, 5)  # add between 1 to 5 additional todos
+        additional_todos_count = random.randint(3, 10)  # add between 1 to 5 additional todos
         for _ in range(additional_todos_count):
             content = random.choice(sample_todos)
             cursor.execute("INSERT INTO todo (content, user) VALUES (?, ?)", (content, user_name[0]))
