@@ -35,9 +35,14 @@ This project uses Python 3.8 or above, and pip for package management. Make sure
 
 `pip install -r requirements.txt`
 
-`python3 main.py`
+`python3 run.py`
 
-## CTF info
-  
-There are x Flags hidden within the application. Because you can download the files locally, it is quite easy to just read the source code and find the flag. So, I recommend you to start the server and explore it like you would explore a normal web application.
-One day I'll try to bake the CTF challenge into a docker container :]
+## Run as Docker
+
+* Start Docker, then in CMD, go to the App directory.
+
+`docker build -t todo_flask_app .`
+
+`docker run -p 5000:5000 todo_flask_app`
+
+* Then visit the app on 127.0.0.1:5000
